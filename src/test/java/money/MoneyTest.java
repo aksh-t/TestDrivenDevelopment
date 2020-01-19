@@ -15,7 +15,7 @@ public class MoneyTest {
     }
 
     @Test
-    public void testEquality(){
+    public void testEquality() {
         assertTrue(Money.dollar(5).equals(Money.dollar(5)));
         assertFalse(Money.dollar(5).equals(Money.dollar(6)));
         assertFalse(Money.dollar(5).equals(Money.franc(5)));
@@ -54,9 +54,22 @@ public class MoneyTest {
     }
 
     @Test
-    public void testReduceMoney(){
+    public void testReduceMoney() {
         Bank bank = new Bank();
         Money result = bank.reduce(Money.dollar(1), "USD");
         assertEquals(Money.dollar(1), result);
+    }
+
+    @Test
+    public void testReduceMoneyDifferenceCurrency() {
+        Bank bank = new Bank();
+        bank.addRate("CHF", "USD", 2);
+        Money result = bank.reduce(Money.franc(2), "USD");
+        assertEquals(Money.dollar(1), result);
+    }
+
+    @Test
+    public void testIdentityRate() {
+        assertEquals(1, new Bank().rate("USD", "USD"));
     }
 }
